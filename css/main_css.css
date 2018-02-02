@@ -1,0 +1,40 @@
+html,body{
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+#div_frame{
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+#div_body{
+	height: 80%;
+}
+#div_body_index{
+	height: 100%;
+}
+#div_body_iframe{
+	padding: 0;
+	height: 100%;
+}
+#main_iframe{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.testclass{
+	border: solid 1px red;
+}
+
+.full{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: #008080;
+}

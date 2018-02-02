@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<link rel="stylesheet"  href="css/login_css.css" />
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	
+	<script type="text/javascript" src="js/server/config.js" ></script>
+	<script type="text/javascript" src="js/server/login.js" ></script>
+	<script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js" ></script>
+	<script type="text/javascript" src="js/utils/CookieUtil.js" ></script>
+	<script type="text/javascript" src="js/jquery/jQuery.md5.js" ></script>
+	<script type="text/javascript" src="js/jquery/jquery.cookie.js" ></script>
+	<script type="text/javascript" src="js/bootstrap/bootstrap.js" ></script>
+	
+	<body onload="init()">
+		<div id="div_frame" class="div-frame">
+			<div class="div-title">
+				<h3><strong>百安达的应用小仓库</strong></h3>
+			</div>
+			<!--<hr style="padding: 0; " />-->
+			<div  class="div-body">
+				<p style="color:royalblue ; font-size: 20px;"><strong>登录</strong></p>
+				<input id="login_username" class="input-body" type="text" placeholder="请输入用户名" onchange="check_username_event()"/>
+				<br />
+				<b id="login_username_tips" style="font-size: 14px; color: red; visibility: hidden;">用户名不存在</b>
+				<br />
+				<input id="login_password" class="input-body" type="password" placeholder="请输入密码" />
+				<br />
+				<b id="login_password_tips" style="font-size: 14px; color: red;visibility:hidden;">密码错误</b>
+				<br />
+				<button class="btn-body" onclick="login_event()">确认</button>
+			</div>
+			<!--<hr class="hr-footer" />-->
+			<footer class="footer-style" >
+				<div  style="height: 100%;width: 100%; text-align: center;">
+					<a href="" style="margin: 0 auto; color: teal;">关于我们</a>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

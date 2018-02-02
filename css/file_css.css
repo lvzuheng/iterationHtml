@@ -1,0 +1,45 @@
+body,
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.frame {
+	height: 99%;
+	width: 99%;
+	margin: 0 auto;
+	min-width: 300px;
+	overflow: hidden;
+	position: relative;
+}
+
+.div-header{
+	text-align: center;
+}
+#div_body{
+	margin-top: 10px;
+}
+
+.table-flie{
+}
+.table-flie td{
+	/*width: 100%; table-layout: fixed;*/
+	vertical-align: top;
+}
+
+.table-flie td{ 
+	border: 1px solid gainsboro;
+	word-break:keep-all;
+	white-space:nowrap;     
+	overflow:hidden;  
+	text-overflow:ellipsis; 
+}
+
+.table-flie tr:hover{
+	background-color: #CCEA9F;
+}
+.table-flie :hover{
+	cursor: pointer;
+}
