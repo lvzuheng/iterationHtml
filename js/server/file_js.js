@@ -1,6 +1,10 @@
 var uri = connectUrl + "file/";
 var user = 'lzh';
 var pWord = '123456';
+var startindex;
+var size = 6;
+var projectArray;
+var productArray;
 
 function init() {
 	//	if($.cookie("userName") == null || $.cookie("passWord") == null) {
@@ -9,18 +13,16 @@ function init() {
 	//	}
 	//	user = $.cookie("userName");
 	//	pWord = $.cookie("passWord");
-	loadFileList();
-
+	loadProject();
 }
 
-function loadProjectList() {
+function loadProject() {
 	var fileList = {
 		"userName": user,
-		"passWord": $.md5(pWord),
-		"projectId": 1
+		"passWord": $.md5(pWord)
 	};
 	$.ajax({
-		url: uri + "Productinfo",
+		url: uri + "Projectinfo",
 		type: "get",
 		data: {
 			"request": JSON.stringify(fileList)
@@ -28,7 +30,8 @@ function loadProjectList() {
 		async: true,
 		success: function(result) {
 			console.log(JSON.parse(result));
-			initFlieList(JSON.parse(result));
+			projectArray = JSON.parse(result);
+			initProject(projectArray, 0);
 		},
 		error: function(result) {
 			console.log(JSON.stringify(result));
@@ -37,14 +40,72 @@ function loadProjectList() {
 	});
 }
 
-function loadFileList() {
+function initProject(projects, projectId) {
 
+	for(var i = 0; i < projectArray.length; i++) {
+		if(projectArray[i].id == projectId) {
+			var data = projectArray[i];
+			projectArray.splice(i, 1);
+			projectArray.splice(0, 0, data);
+		}
+	}
+	var ul_index = $("#ul_project");
+	ul_index.html("");
+	var width = 0;
+	var li_more;
+	var ul_more;
+	for(var i = 0; i < projects.length; i++) {
+		var li = createElemet("li", null);
+		var a = createElemet("a", projects[i].projectname)
+		a.setAttribute("href", "#");
+		a.setAttribute("data-toggle", "tab");
+		li.appendChild(a);
+
+		li.setAttribute("value", projects[i].id);
+		if(width < document.body.clientWidth - 250) {
+			li.addEventListener("click", function() {
+					loadFileList($(this).val());
+			});
+			ul_index.append(li);
+			width = li.offsetWidth + width;
+			
+		} else {
+			if(li_more == null) {
+				li_more = createElemet("li", null);
+				$(li_more).addClass("dropdown");
+				var a = createElemet("a", "more");
+				a.setAttribute("data-toggle", "dropdown");
+				a.setAttribute("href", "#");
+				var b = createElemet("b", null);
+				$(b).addClass("caret");
+				a.appendChild(b)
+				li_more.appendChild(a);
+				ul_more = createElemet("ul", null);
+				ul_more.appendChild(li);
+				$(ul_more).addClass("dropdown-menu");
+				li_more.appendChild(ul_more);
+				ul_index.append(li_more);
+			}
+			li.addEventListener("click", function() {
+				initProject(projectArray, $(this).val());
+				loadFileList($(this).val());
+			});
+			ul_more.appendChild(li);
+		}
+		ul_index.children().eq(0).toggleClass("active");
+	}
+	loadFileList(projectArray[0].id);
+	console.log("ul:"+$("#ul_project").children().eq(0).val());
+}
+
+function loadFileList(projectId) {
+	console.log("aaa:"+projectId);
 	var fileList = {
 		"userName": user,
 		"passWord": $.md5(pWord),
-		"projectId": 1
+		"projectId": projectId
 	};
-	console.log("request"+JSON.stringify(fileList));
+	console.log("request" + JSON.stringify(fileList));
 	$.ajax({
 		url: uri + "Productinfo",
 		type: "get",
@@ -65,7 +126,7 @@ function loadFileList() {
 
 function initFlieList(data) {
 	console.log(JSON.stringify(data));
-	$('#table_file').eq(0).nextAll().remove();;
+	$('#table_file').eq(0).nextAll().remove();
 	for(var i = 0; i < data.length; i++) {
 		var tr = createElemet("tr");
 		var td = createElemet("td", null);
@@ -124,11 +185,13 @@ function importFile() {
 }
 
 function upload(filename, filesize, dataURL) {
+	var projectId = $("#ul_project").children().eq(0).val();
 	var fd = new FormData();
 	var blob = dataURItoBlob(dataURL);
+	console.log(+$("#ul_project").children().eq(0).val());
 	fd.append("userName", user);
 	fd.append("passWord", $.md5(pWord));
-	fd.append("projectId", 1);
+	fd.append("projectId",projectId );
 	fd.append("fileName", filename);
 	fd.append("fileSize", filesize);
 	fd.append("fileData", blob);
@@ -157,7 +220,7 @@ function upload(filename, filesize, dataURL) {
 			console.log(data);
 			if(data == 1) {
 				alert("success");
-				loadFileList();
+				loadFileList(projectId);
 			} else {
 				alert("error");
 			}
@@ -183,7 +246,7 @@ function dataURItoBlob(dataURI) {
 }
 
 function deleteFile() {
-
+	var projectId = $("#ul_project").children().eq(0).val();
 	var checkBoxs = $("#table_file :checkbox");
 	var fileArray = new Array()
 	for(var i = 0; i < checkBoxs.length; i++) {
@@ -211,7 +274,7 @@ function deleteFile() {
 			} else {
 				alert("删除失败，请重新尝试");
 			}
-			loadFileList();
+			loadFileList(projectId);
 		},
 		error: function(result) {
 			console.log(JSON.stringify(result));

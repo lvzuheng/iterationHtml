@@ -14,15 +14,17 @@
 	<script type="text/javascript" src="js/jquery/jquery.cookie.js"></script>
 	<script type="text/javascript" src="js/utils/CookieUtil.js"></script>
 	<script type="text/javascript" src="js/jquery/jQuery.md5.js"></script>
+	<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 
 	<body onload="init()">
 		<div id="div_frame" class="div-frame col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div id="div_header" class="div-header">
+
 			</div>
-			<div id="div_body" class="div-body col-lg-12 col-md-12 col-sm-12 col-xs-12" style="">
-			<ul id="ul_product" class="nav nav-tabs">
-			</ul>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
+			<div id="div_body" class="div-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<ul id="ul_project" class="nav nav-tabs col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				</ul>
+				<div id="div_btn" class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="margin-top: 10px;">
 					<input type="file" id="files" style="display:none" onchange="importFile();" accept=".apk,.jar" />
 					<input type="button" id="import" class="btn btn-success" value="上传文件" onclick="javascript:$('#files').click();" />
 					<input type="button" id="import" class="btn btn-danger" value="刪除選中的文件" onclick="deleteFile();" />
@@ -35,7 +37,7 @@
 							<td class="col-lg-2 col-md-2 col-sm-2 col-xs-2">包名</td>
 							<td class="col-lg-1 col-md-1 col-sm-1 col-xs-1">版本号</td>
 							<td class="col-lg-1 col-md-1 col-sm-1 col-xs-1">状态</td>
-							<td class="col-lg-2 col-md-2 col-sm-2 col-xs-2">密匙</td>
+							<td class="col-lg-2 col-md-2 col-sm-2 col-xs-2">密钥</td>
 							<td class="col-lg-2 col-md-2 col-sm-2 col-xs-2">创建时间</td>
 							<td class="col-lg-1 col-md-1 col-sm-1 col-xs-1">大小</td>
 						</tr>

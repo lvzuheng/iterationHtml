@@ -1,6 +1,6 @@
 var userName;
 var passWord;
-var uri = connectUrl + "user/"
+var uri = connectUrl + "file/"
 
 var projectArray = new Array;
 var startIndex;
@@ -61,7 +61,6 @@ function initProjectList(start) {
 		
 	}
 	startIndex = start+size;
-	
 }
 function initIndexList(){
 	var ul_index = $("#ul_index");

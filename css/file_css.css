@@ -6,7 +6,7 @@ html {
 	width: 100%;
 }
 
-.frame {
+.div-frame {
 	height: 99%;
 	width: 99%;
 	margin: 0 auto;
@@ -15,31 +15,48 @@ html {
 	position: relative;
 }
 
-.div-header{
+.div-header {
 	text-align: center;
 }
-#div_body{
+
+#div_body {
 	margin-top: 10px;
+	height: 99%;
+	width: 99%;
+	margin: 0 auto;
+	overflow: hidden;
+	position: relative;
 }
 
-.table-flie{
-}
-.table-flie td{
+.table-flie {}
+
+.table-flie td {
 	/*width: 100%; table-layout: fixed;*/
 	vertical-align: top;
 }
 
-.table-flie td{ 
+.table-flie td {
 	border: 1px solid gainsboro;
-	word-break:keep-all;
-	white-space:nowrap;     
-	overflow:hidden;  
-	text-overflow:ellipsis; 
+	word-break: keep-all;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.table-flie tr:hover{
+.table-flie tr:hover {
 	background-color: #CCEA9F;
 }
-.table-flie :hover{
+
+.table-flie :hover {
 	cursor: pointer;
 }
+
+#ul_project {
+	/*background: red;*/
+	/*overflow: hidden;*/
+	/*height: 100px;*/
+}
+
+#ul_project>li {
+}
+.test{background:  red;}
