@@ -1,8 +1,8 @@
 var uri = connectUrl + "user/";
 //var uri = "http://120.55.162.188:8080/MobileSystem/" + "login/";
 function init() {
-	$("#login_username").val($.cookie("userName"));
-	$("#login_password").val($.cookie("passWord"));
+	$("#login_username").val(getUserName());
+	$("#login_password").val(getPassWord());
 	//		if($("#login_username").val()!=null && $("#login_password").val()!=null){
 	//			login_event();
 	//		}
@@ -58,12 +58,8 @@ function login_event() {
 			if(result == "0") {
 				$("#login_password_tips")[0].style.visibility = "visible";
 			} else {
-				$.cookie("userName", $("#login_username").val(), {
-					path: "/"
-				});
-				$.cookie("passWord", $("#login_password").val(), {
-					path: "/"
-				});
+				setUserName($("#login_username").val());
+				setPassWord( $("#login_password").val());
 				location.href = "Main.html";
 			}
 		},

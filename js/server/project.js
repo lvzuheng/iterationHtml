@@ -11,9 +11,9 @@ function init() {
 		parent.location.href = "Login.html";
 		return;
 	}
-	userName = $.cookie("userName");
-	passWord = $.cookie("passWord");
-	loadProjectList(0, 6);
+	userName = getUserName();
+	passWord = getPassWord();
+	loadProjectList(0);
 	setCurrentFrame(window.location.href);
 }
 
@@ -56,7 +56,7 @@ function initProjectList(start) {
 		var li = createElemet("li", projectArray[i].projectname);
 		li.setAttribute("value", projectArray[i].id);
 		li.addEventListener('click', function() {
-			setProjectId( $(this).val());
+			setProjectId($(this).val());
 			location.href = "file.html";
 		});
 		ul_project.append(li);
@@ -91,4 +91,90 @@ function createElemet(element, value) {
 		em.innerText = value;
 	}
 	return em;
+}
+
+function createProject() {
+
+}
+
+//添加项目功能
+function createProject() {
+	var dialog_add = dialog({
+		title: '创建项目',
+		content: $("#div_add"),
+		width: "250px",
+		okValue: '创建',
+		ok: function() {
+			button_add_event();
+		},
+		cancelValue: '取消',
+		cancel: function() {},
+		quickClose: true
+	});
+	dialog_add.show();
+}
+
+function button_add_event() {
+	var loading = load_dialog("创建中");
+	loading.show();
+	if($("#input_add_projectName").val() != null && $("#input_add_projectAuthority").val() != null) {
+		var jsondata = {
+			"userName": userName,
+			"passWord": $.md5(passWord),
+			"projectName": $("#input_add_projectName").val(),
+			"authority": $("#input_add_projectAuthority").val(),
+		};
+		$.ajax({
+			url: uri + "createProject",
+			type: "get",
+			data: {
+				"request": JSON.stringify(jsondata),
+			},
+			async: false,
+			success: function(result) {
+				loading.close();
+				if(result != "0") {
+					$("#input_add_projectName").val("");
+					$("#input_add_projectAuthority").val("");
+					loadProjectList(0);
+					var info_d = info_dialog("创建成功");
+					info_d.show();
+					setTimeout(function() {
+						info_d.close();
+					}, 2000);
+				} else {
+					var info_d = info_dialog("创建失败");
+					info_d.show();
+					setTimeout(function() {
+						info_d.close();
+					}, 2000);
+				}
+			},
+			error: function(result) {
+				var info_d = info_dialog("创建失败");
+				info_d.show();
+				setTimeout(function() {
+					info_d.close();
+				}, 2000);
+			}
+		});
+	}
+}
+
+function load_dialog(contant) {
+	var loading = dialog({
+		title: contant,
+		width: "auto",
+		quickClose: true
+	});
+	return loading;
+}
+
+function info_dialog(content) {
+	var info = dialog({
+		content: content,
+		width: "auto",
+		quickClose: true
+	});
+	return info;
 }

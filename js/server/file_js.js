@@ -12,8 +12,8 @@ function init() {
 		console.log("调回");
 		return;
 	}
-	user = $.cookie("userName");
-	pWord = $.cookie("passWord");
+	user = getUserName();
+	pWord = getPassWord();
 	selectProjectId = getProjectId();
 	if(selectProjectId == null) {
 		selectProjectId = 0;

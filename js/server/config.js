@@ -3,6 +3,25 @@ var ip = "10.20.175.146";
 var port = "9060";
 var connectUrl = "http://" + ip + ":" + port + "/iteration/";
 
+
+function setUserName(userName) {
+	$.cookie("userName", userName, {
+		path: "/"
+	});
+}
+function getUserName(userName) {
+	return $.cookie("userName");
+}
+
+function setPassWord(passWord) {
+	$.cookie("passWord", passWord, {
+		path: "/"
+	});
+}
+function getPassWord(passWord) {
+	return $.cookie("passWord");
+}
+
 function setProjectId(saveprojectId) {
 	$.cookie("projectId", saveprojectId, {
 		path: "/"

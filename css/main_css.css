@@ -1,44 +1,81 @@
-html,body{
+html,
+body {
 	margin: 0;
 	padding: 0;
 	height: 100%;
 	width: 100%;
 }
-#div_frame{
+
+#div_frame {
 	margin: 0;
 	padding: 0;
 	height: 100%;
 	width: 100%;
 }
 
-
-
-#div_body{
+#div_body {
 	height: 80%;
 }
-#div_body_index{
+
+#div_body_index {
+	height: 100%;
+	overflow: hidden;
+	padding: 0;
+	max-width: 180px;
+}
+
+#div_user {
+	width: 100%;
+	height:9%;
+	background-size: cover;
+	border: red solid 1px;
+	text-align: center;
+
+}
+
+#div_user>p {
+		background: url(../img/usericon.png);
+	background-size: 100% 100%;
+	/*margin-top: 9%;*/
+	/*border: red solid 1px;*/
+	line-height: 200%;
+	font-size: 20px;
+	text-align: center;
+	width: 100%;
 	height: 100%;
 }
-#div_body_index > p{
-	width: 100%;
-	text-align: center;
+
+#div_icon {
+	width: 80px;
+	margin: 0 auto;
+	align-content: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
-#div_body_iframe{
+
+#div_icon>img {
+	margin: 0 auto;
+	width: 100%;
+	align-content: center;
+}
+
+#div_body_iframe {
 	padding: 0;
 	height: 100%;
 }
-#main_iframe{
+
+#main_iframe {
 	margin: 0;
 	padding: 0;
 	width: 100%;
 	height: 100%;
 }
 
-.testclass{
+.testclass {
 	border: solid 1px red;
 }
 
-.full{
+.full {
 	width: 100%;
 	margin: 0;
 	padding: 0;

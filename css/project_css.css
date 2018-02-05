@@ -14,8 +14,10 @@ body {
 	width: 100%;
 }
 
+#div_header{
+	margin: 10px;
+}
 #div_body {
-	margin-top: 30px;
 	width: 100%;
 	height: 80%;
 }

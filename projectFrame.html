@@ -5,20 +5,22 @@
 		<meta charset="utf-8">
 		<title></title>
 	</head>
-		<script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js" ></script>
-	<script type="text/javascript" src="js/jquery/jquery.cookie.js" ></script>
-	<script type="text/javascript" src="js/jquery/jQuery.md5.js" ></script>
-	<script type="text/javascript" src="js/server/config.js" ></script>
-	<script type="text/javascript" src="js/server/project.js" ></script>
-
+	<script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/jquery/jQuery.md5.js"></script>
+	<script type="text/javascript" src="js/server/config.js"></script>
+	<script type="text/javascript" src="js/server/project.js"></script>
+	<script type="text/javascript" src="js/dialog/dialog.js"></script>
 	<link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="css/project_css.css" />
 
 	<body class="test" onload="init()">
 		<div id="div_frame">
+			<div id="div_header">
+				<input type="button" id="import" class="btn btn-success" value="创建项目" onclick="createProject()" />
+			</div>
 			<div id="div_body">
 				<ul id="ul_project">
-				
 				</ul>
 			</div>
 			<div id="div_footer">
@@ -26,7 +28,14 @@
 				</ul>
 			</div>
 		</div>
-
+		<div id="div_add" style="display: none;">
+			<div id="div_add_input">
+				项目名：<input type="text" id="input_add_projectName" />
+				<p id="p_hadTerminalId" style="font-size:14px;margin:0;color: red; visibility: hidden;">存在用户名</p>
+				公开状态：<input type="text" id="input_add_projectAuthority" />
+				<p></p>
+			</div>
+		</div>
 	</body>
 
 </html>
