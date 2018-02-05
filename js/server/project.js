@@ -1,7 +1,6 @@
 var userName;
 var passWord;
 var uri = connectUrl + "file/"
-
 var projectArray = new Array;
 var startIndex;
 var size = 6;
@@ -15,6 +14,7 @@ function init() {
 	userName = $.cookie("userName");
 	passWord = $.cookie("passWord");
 	loadProjectList(0, 6);
+	setCurrentFrame(window.location.href);
 }
 
 function loadProjectList(start) {
@@ -49,39 +49,41 @@ function initProjectList(start) {
 	var readSize
 	if(size > projectArray.length - start) {
 		readSize = projectArray.length - start;
-	}else{
+	} else {
 		readSize = size;
 	}
-	for(var i = start; i < start +readSize; i++) {
+	for(var i = start; i < start + readSize; i++) {
 		var li = createElemet("li", projectArray[i].projectname);
-		li.addEventListener('click', function(){
-			
+		li.setAttribute("value", projectArray[i].id);
+		li.addEventListener('click', function() {
+			setProjectId( $(this).val());
+			location.href = "file.html";
 		});
 		ul_project.append(li);
-		
+
 	}
-	startIndex = start+size;
+	startIndex = start + size;
 }
-function initIndexList(){
+
+function initIndexList() {
 	var ul_index = $("#ul_index");
 	ul_index.html("");
 	var index = Math.ceil(projectArray.length / size);
 	for(var i = 0; i < index; i++) {
 		var li = createElemet("li", null);
-		li.setAttribute("value", i );
+		li.setAttribute("value", i);
 		li.appendChild(createElemet("a", i + 1))
 		li.addEventListener('click', function() {
-			console.log("li.val:"+((startIndex/size))+","+$(this).val());
-			if((startIndex/size)  != ($(this).val()+1)){
-				console.log("size:"+startIndex +","+($(this).val()*size)+","+$(this).val());
-				initProjectList($(this).val()*size);
+			console.log("li.val:" + ((startIndex / size)) + "," + $(this).val());
+			if((startIndex / size) != ($(this).val() + 1)) {
+				console.log("size:" + startIndex + "," + ($(this).val() * size) + "," + $(this).val());
+				initProjectList($(this).val() * size);
 			}
-			
+
 		});
 		ul_index.append(li);
 	}
 }
-	
 
 function createElemet(element, value) {
 	var em = document.createElement(element);

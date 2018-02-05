@@ -11,11 +11,17 @@ html,body{
 	width: 100%;
 }
 
+
+
 #div_body{
 	height: 80%;
 }
 #div_body_index{
 	height: 100%;
+}
+#div_body_index > p{
+	width: 100%;
+	text-align: center;
 }
 #div_body_iframe{
 	padding: 0;

@@ -1,19 +1,25 @@
 var uri = connectUrl + "file/";
-var user = 'lzh';
-var pWord = '123456';
+var user ;
+var pWord  ;
 var startindex;
 var size = 6;
 var projectArray;
 var productArray;
+var selectProjectId;
 
 function init() {
-	//	if($.cookie("userName") == null || $.cookie("passWord") == null) {
-	//		console.log("调回");
-	//		return;
-	//	}
-	//	user = $.cookie("userName");
-	//	pWord = $.cookie("passWord");
+	if($.cookie("userName") == null || $.cookie("passWord") == null) {
+		console.log("调回");
+		return;
+	}
+	user = $.cookie("userName");
+	pWord = $.cookie("passWord");
+	selectProjectId = getProjectId();
+	if(selectProjectId == null) {
+		selectProjectId = 0;
+	}
 	loadProject();
+	setCurrentFrame(window.location.href);
 }
 
 function loadProject() {
@@ -31,7 +37,7 @@ function loadProject() {
 		success: function(result) {
 			console.log(JSON.parse(result));
 			projectArray = JSON.parse(result);
-			initProject(projectArray, 0);
+			initProject(projectArray, selectProjectId);
 		},
 		error: function(result) {
 			console.log(JSON.stringify(result));
@@ -41,7 +47,7 @@ function loadProject() {
 }
 
 function initProject(projects, projectId) {
-
+	selectProjectId = projectId;
 	for(var i = 0; i < projectArray.length; i++) {
 		if(projectArray[i].id == projectId) {
 			var data = projectArray[i];
@@ -60,15 +66,15 @@ function initProject(projects, projectId) {
 		a.setAttribute("href", "#");
 		a.setAttribute("data-toggle", "tab");
 		li.appendChild(a);
-
 		li.setAttribute("value", projects[i].id);
 		if(width < document.body.clientWidth - 250) {
 			li.addEventListener("click", function() {
-					loadFileList($(this).val());
+				selectProjectId = $(this).val();
+				loadFileList($(this).val());
+				setProjectId(selectProjectId);
 			});
 			ul_index.append(li);
 			width = li.offsetWidth + width;
-			
 		} else {
 			if(li_more == null) {
 				li_more = createElemet("li", null);
@@ -89,17 +95,18 @@ function initProject(projects, projectId) {
 			li.addEventListener("click", function() {
 				initProject(projectArray, $(this).val());
 				loadFileList($(this).val());
+				setProjectId(selectProjectId);
 			});
 			ul_more.appendChild(li);
 		}
 		ul_index.children().eq(0).toggleClass("active");
 	}
 	loadFileList(projectArray[0].id);
-	console.log("ul:"+$("#ul_project").children().eq(0).val());
+	console.log("ul:" + $("#ul_project").children().eq(0).val());
 }
 
 function loadFileList(projectId) {
-	console.log("aaa:"+projectId);
+	console.log("aaa:" + projectId);
 	var fileList = {
 		"userName": user,
 		"passWord": $.md5(pWord),
@@ -114,19 +121,19 @@ function loadFileList(projectId) {
 		},
 		async: true,
 		success: function(result) {
-			console.log(JSON.parse(result));
+//			console.log(JSON.parse(result));
 			initFlieList(JSON.parse(result));
 		},
 		error: function(result) {
-			console.log(JSON.stringify(result));
+//			console.log(JSON.stringify(result));
 			return null;
 		}
 	});
 }
 
 function initFlieList(data) {
-	console.log(JSON.stringify(data));
-	$('#table_file').eq(0).nextAll().remove();
+	$('#table_file tr').eq(0).nextAll().remove();
+	console.log("initFlieList:" + JSON.stringify(data));
 	for(var i = 0; i < data.length; i++) {
 		var tr = createElemet("tr");
 		var td = createElemet("td", null);
@@ -185,13 +192,13 @@ function importFile() {
 }
 
 function upload(filename, filesize, dataURL) {
-	var projectId = $("#ul_project").children().eq(0).val();
+	var projectId = selectProjectId;
 	var fd = new FormData();
 	var blob = dataURItoBlob(dataURL);
 	console.log(+$("#ul_project").children().eq(0).val());
 	fd.append("userName", user);
 	fd.append("passWord", $.md5(pWord));
-	fd.append("projectId",projectId );
+	fd.append("projectId", projectId);
 	fd.append("fileName", filename);
 	fd.append("fileSize", filesize);
 	fd.append("fileData", blob);
