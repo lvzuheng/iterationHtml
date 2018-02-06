@@ -24,7 +24,7 @@ function loadProjectList(start) {
 	};
 	$.ajax({
 		url: uri + "Projectinfo",
-		type: "get",
+		type: "post",
 		data: {
 			"request": JSON.stringify(fileList)
 		},
@@ -126,7 +126,7 @@ function button_add_event() {
 		};
 		$.ajax({
 			url: uri + "createProject",
-			type: "get",
+			type: "post",
 			data: {
 				"request": JSON.stringify(jsondata),
 			},
@@ -159,22 +159,4 @@ function button_add_event() {
 			}
 		});
 	}
-}
-
-function load_dialog(contant) {
-	var loading = dialog({
-		title: contant,
-		width: "auto",
-		quickClose: true
-	});
-	return loading;
-}
-
-function info_dialog(content) {
-	var info = dialog({
-		content: content,
-		width: "auto",
-		quickClose: true
-	});
-	return info;
 }

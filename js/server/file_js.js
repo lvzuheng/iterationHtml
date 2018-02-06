@@ -1,10 +1,9 @@
 var uri = connectUrl + "file/";
-var user ;
-var pWord  ;
+var user;
+var pWord;
 var startindex;
 var size = 6;
 var projectArray;
-var productArray;
 var selectProjectId;
 
 function init() {
@@ -15,9 +14,6 @@ function init() {
 	user = getUserName();
 	pWord = getPassWord();
 	selectProjectId = getProjectId();
-	if(selectProjectId == null) {
-		selectProjectId = 0;
-	}
 	loadProject();
 	setCurrentFrame(window.location.href);
 }
@@ -29,7 +25,7 @@ function loadProject() {
 	};
 	$.ajax({
 		url: uri + "Projectinfo",
-		type: "get",
+		type: "post",
 		data: {
 			"request": JSON.stringify(fileList)
 		},
@@ -37,6 +33,19 @@ function loadProject() {
 		success: function(result) {
 			console.log(JSON.parse(result));
 			projectArray = JSON.parse(result);
+			console.log("selectProjectId:" + selectProjectId + "," + (selectProjectId == null));
+			if(selectProjectId == null) {
+				selectProjectId = projectArray[0].id;
+				console.log("selectProjectId:" + selectProjectId);
+
+			} else {
+				for(var i = 0; i < projectArray.length; i++) {
+					if(projectArray[i].projectId == selectProjectId) {
+						break;
+					}
+					selectProjectId = projectArray[0].id
+				}
+			}
 			initProject(projectArray, selectProjectId);
 		},
 		error: function(result) {
@@ -47,62 +56,67 @@ function loadProject() {
 }
 
 function initProject(projects, projectId) {
-	selectProjectId = projectId;
-	for(var i = 0; i < projectArray.length; i++) {
-		if(projectArray[i].id == projectId) {
-			var data = projectArray[i];
-			projectArray.splice(i, 1);
-			projectArray.splice(0, 0, data);
-		}
-	}
+
 	var ul_index = $("#ul_project");
 	ul_index.html("");
-	var width = 0;
-	var li_more;
-	var ul_more;
-	for(var i = 0; i < projects.length; i++) {
-		var li = createElemet("li", null);
-		var a = createElemet("a", projects[i].projectname)
-		a.setAttribute("href", "#");
-		a.setAttribute("data-toggle", "tab");
-		li.appendChild(a);
-		li.setAttribute("value", projects[i].id);
-		if(width < document.body.clientWidth - 250) {
-			li.addEventListener("click", function() {
-				selectProjectId = $(this).val();
-				loadFileList($(this).val());
-				setProjectId(selectProjectId);
-			});
-			ul_index.append(li);
-			width = li.offsetWidth + width;
-		} else {
-			if(li_more == null) {
-				li_more = createElemet("li", null);
-				$(li_more).addClass("dropdown");
-				var a = createElemet("a", "more");
-				a.setAttribute("data-toggle", "dropdown");
-				a.setAttribute("href", "#");
-				var b = createElemet("b", null);
-				$(b).addClass("caret");
-				a.appendChild(b)
-				li_more.appendChild(a);
-				ul_more = createElemet("ul", null);
-				ul_more.appendChild(li);
-				$(ul_more).addClass("dropdown-menu");
-				li_more.appendChild(ul_more);
-				ul_index.append(li_more);
+	selectProjectId = projectId;
+	if(projectArray != null && projectArray.length > 0) {
+		for(var i = 0; i < projectArray.length; i++) {
+			if(projectArray[i].id == projectId) {
+				var data = projectArray[i];
+				projectArray.splice(i, 1);
+				projectArray.splice(0, 0, data);
 			}
-			li.addEventListener("click", function() {
-				initProject(projectArray, $(this).val());
-				loadFileList($(this).val());
-				setProjectId(selectProjectId);
-			});
-			ul_more.appendChild(li);
+		}
+		var width = 0;
+		var li_more;
+		var ul_more;
+		for(var i = 0; i < projects.length; i++) {
+			var li = createElemet("li", null);
+			var a = createElemet("a", projects[i].projectname)
+			a.setAttribute("href", "#");
+			a.setAttribute("data-toggle", "tab");
+			li.appendChild(a);
+			li.setAttribute("value", projects[i].id);
+			if(width < document.body.clientWidth - 250) {
+				li.addEventListener("click", function() {
+					selectProjectId = $(this).val();
+					loadFileList($(this).val());
+					setProjectId(selectProjectId);
+				});
+				ul_index.append(li);
+				width = li.offsetWidth + width;
+			} else {
+				if(li_more == null) {
+					li_more = createElemet("li", null);
+					$(li_more).addClass("dropdown");
+					var a = createElemet("a", "more");
+					a.setAttribute("data-toggle", "dropdown");
+					a.setAttribute("href", "#");
+					var b = createElemet("b", null);
+					$(b).addClass("caret");
+					a.appendChild(b)
+					li_more.appendChild(a);
+					ul_more = createElemet("ul", null);
+					ul_more.appendChild(li);
+					$(ul_more).addClass("dropdown-menu");
+					li_more.appendChild(ul_more);
+					ul_index.append(li_more);
+				}
+				li.addEventListener("click", function() {
+					initProject(projectArray, $(this).val());
+					loadFileList($(this).val());
+					setProjectId(selectProjectId);
+				});
+				ul_more.appendChild(li);
+			}
 		}
 		ul_index.children().eq(0).toggleClass("active");
+		//	console.log("active:" + ul_index.children().eq(0).attr("class"));
+		loadFileList(projectArray[0].id);
+		//	console.log("ul:" + $("#ul_project").children().eq(0).val());
 	}
-	loadFileList(projectArray[0].id);
-	console.log("ul:" + $("#ul_project").children().eq(0).val());
+
 }
 
 function loadFileList(projectId) {
@@ -115,17 +129,18 @@ function loadFileList(projectId) {
 	console.log("request" + JSON.stringify(fileList));
 	$.ajax({
 		url: uri + "Productinfo",
-		type: "get",
+		type: "post",
 		data: {
 			"request": JSON.stringify(fileList)
 		},
 		async: true,
 		success: function(result) {
-//			console.log(JSON.parse(result));
+			//			console.log(JSON.parse(result));
+			productArray = JSON.parse(result);
 			initFlieList(JSON.parse(result));
 		},
 		error: function(result) {
-//			console.log(JSON.stringify(result));
+			//			console.log(JSON.stringify(result));
 			return null;
 		}
 	});
@@ -192,6 +207,8 @@ function importFile() {
 }
 
 function upload(filename, filesize, dataURL) {
+	var loading = load_dialog("上传中，请耐心等待");
+	loading.show();
 	var projectId = selectProjectId;
 	var fd = new FormData();
 	var blob = dataURItoBlob(dataURL);
@@ -204,35 +221,24 @@ function upload(filename, filesize, dataURL) {
 	fd.append("fileData", blob);
 	$.ajax({
 		url: uri + "upload",
-		type: "POST",
+		type: "post",
 		data: fd,
 		async: true,
 		processData: false, // tell jQuery not to process the data 
 		contentType: false, // tell jQuery not to set contentType 
-		//		xhr: function xhr() {
-		//			//获取原生的xhr对象
-		//			var xhr = new XMLHttpRequest;
-		//			xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;charset=UTF-8");  
-		//			if(xhr.upload) {
-		//				//添加 progress 事件监听
-		//				xhr.upload.addEventListener('progress', function(e) {
-		//					//已上传文件字节数/总字节数
-		//					var percentage = parseInt(e.loaded / e.total * 100);
-		//					console.log("time:"+percentage);
-		//				}, false);
-		//			}
-		//			return xhr;
-		//		},
 		success: function(data) {
-			console.log(data);
+			//			console.log(data);
 			if(data == 1) {
-				alert("success");
 				loadFileList(projectId);
+				loading.close();
+				showInfoDialog("上传成功", 1000);
 			} else {
-				alert("error");
+				loading.close();
+				showInfoDialog("上传失败", 1000);
 			}
 		},
 		error: function(result) {
+			showInfoDialog("上传失败，请验证文件信息", 1000);
 			console.log(JSON.stringify(result));
 			return null;
 		}
@@ -253,19 +259,26 @@ function dataURItoBlob(dataURI) {
 }
 
 function deleteFile() {
-	var projectId = $("#ul_project").children().eq(0).val();
+	var loading = load_dialog("删除中，请耐心等待");
+	loading.show();
+	var projectId = selectProjectId;
 	var checkBoxs = $("#table_file :checkbox");
 	var fileArray = new Array()
 	for(var i = 0; i < checkBoxs.length; i++) {
 		if(checkBoxs.eq(i).prop("checked")) {
-			console.log(checkBoxs.eq(i).val());
+			//			console.log(checkBoxs.eq(i).val());
 			fileArray[fileArray.length] = checkBoxs.eq(i).val();
 		}
+	}
+	if(fileArray == null || fileArray.length == 0) {
+		loading.close();
+		showInfoDialog("没有选择文件", 1000);
+		return;
 	}
 	var fileDelete = {
 		"userName": user,
 		"passWord": $.md5(pWord),
-		"productId": fileArray,
+		"productId": fileArray
 	};
 	console.log(JSON.stringify(fileDelete));
 	$.ajax({
@@ -277,13 +290,159 @@ function deleteFile() {
 		async: true,
 		success: function(result) {
 			if(result == 1) {
-				alert("删除成功");
+				loadFileList(projectId);
+				loading.close();
+				showInfoDialog("删除成功", 1000);
 			} else {
-				alert("删除失败，请重新尝试");
+				loading.close();
+				showInfoDialog("删除失败，请重新尝试", 1000);
 			}
-			loadFileList(projectId);
 		},
 		error: function(result) {
+			loading.close();
+			showInfoDialog("删除失败，请验证信息", 1000);
+			//			console.log(JSON.stringify(result));
+			return null;
+		}
+	});
+}
+
+// 编辑功能
+function projectSetting() {
+	if(projectArray != null && projectArray.length > 0) {
+		for(var i = 0; i < projectArray.length; i++) {
+			console.log("cccccc:" + selectProjectId + "," + projectArray[i].id);
+			if(projectArray[i].id == selectProjectId) {
+				console.log("cccccc:" + projectArray[i].projectname);
+				$("#input_editor_projectName").val(projectArray[i].projectname);
+				$("#input_add_projectAuthority option[value=" + 1 + "]").attr("selected", "selected");
+			}
+		}
+		var dialog_edit = dialog({
+			title: '项目设置',
+			content: $("#div_editor"),
+			width: "250px",
+			button: [{
+					value: '取消',
+					callback: function() {
+						//					dialog_edit.close();
+					}
+				},
+				{
+					value: '保存',
+					callback: function() {
+						saveProject();
+					}
+				},
+				{
+					value: "删除项目",
+					callback: function() {
+						deleteRequest();
+					}
+				}
+			],
+			quickClose: true
+		});
+		dialog_edit.show();
+	}
+
+}
+
+function saveProject() {
+	var loading = load_dialog("更新设置中，请耐心等待");
+	loading.show();
+	if($("#input_editor_projectName").val() != null && $("#input_editor_projectAuthory").val() != null) {
+		var updateProject = {
+			"userName": user,
+			"passWord": $.md5(pWord),
+			"projectId": selectProjectId,
+			"projectName": $("#input_editor_projectName").val(),
+			"authority": $("#input_editor_projectAuthory").val()
+		};
+		$.ajax({
+			url: uri + "updateProject",
+			type: "post",
+			data: {
+				"request": JSON.stringify(updateProject)
+			},
+			async: true,
+			success: function(result) {
+				if(result != 0) {
+					var p = JSON.parse(result);
+//					for(var i = 0; i < projectArray.length; i++) {
+//						if(projectArray[i].id == p.id) {
+//							projectArray[i] = p;
+//						}
+//					}
+					loadProject();
+					loading.close();
+					showInfoDialog("更新成功", 1000);
+				} else {
+					loading.close();
+					showInfoDialog("更新失败，请重新尝试", 1000);
+				}
+			},
+			error: function(result) {
+				loading.close();
+				showInfoDialog("更新失败，请验证信息", 1000);
+				console.log(JSON.stringify(result));
+				return null;
+			}
+		});
+	}
+
+}
+
+function deleteRequest() {
+	if(productArray != null && productArray.length > 0) {
+		console.log("提醒");
+		var dialog_add = dialog({
+			title: '提醒',
+			content: "项目库中存在文件,删除项目同时会删除库中文件，是否继续？",
+			width: "250px",
+			okValue: '删除',
+			ok: function() {
+				removeProject();
+			},
+			cancelValue: '取消',
+			cancel: function() {},
+			quickClose: true
+		});
+		dialog_add.show();
+	} else {
+		removeProject();
+	}
+}
+
+function removeProject() {
+	var loading = load_dialog("删除中，请耐心等待");
+	loading.show();
+	var projectId = selectProjectId;
+	var removeProject = {
+		"userName": user,
+		"passWord": $.md5(pWord),
+		"projectId": projectId
+	};
+	console.log(JSON.stringify(removeProject));
+	$.ajax({
+		url: uri + "removeProject",
+		type: "post",
+		data: {
+			"request": JSON.stringify(removeProject)
+		},
+		async: true,
+		success: function(result) {
+			if(result == 1) {
+				loadProject();
+				loading.close();
+				showInfoDialog("删除成功", 1000);
+			} else {
+				loading.close();
+				showInfoDialog("删除失败，请重新尝试", 1000);
+			}
+		},
+		error: function(result) {
+			showInfoDialog("删除失败，请验证信息", 1000);
 			console.log(JSON.stringify(result));
 			return null;
 		}

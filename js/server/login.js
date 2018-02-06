@@ -17,7 +17,7 @@ function check_username_event() {
 		};
 		$.ajax({
 			url: uri + "username",
-			type: "get",
+			type: "post",
 			data: {
 				"request": JSON.stringify(jsondata)
 			},
@@ -48,18 +48,19 @@ function login_event() {
 	console.log("aaaaa:" + uri);
 	$.ajax({
 		url: uri + "login",
-		type: "get",
+		type: "post",
 		data: {
 			"request": JSON.stringify(data)
 		},
 		async: true,
 		success: function(result) {
-
+			
 			if(result == "0") {
 				$("#login_password_tips")[0].style.visibility = "visible";
 			} else {
 				setUserName($("#login_username").val());
 				setPassWord( $("#login_password").val());
+				clearInfo();
 				location.href = "Main.html";
 			}
 		},

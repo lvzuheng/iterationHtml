@@ -34,7 +34,6 @@ body {
 	list-style: none;
 	border: solid 1px red;
 	/*text-align: center;*/
-	line-height: 100px;
 	/*padding-top: 50%;*/
 	width: 32%;
 	height: 44.33%;
@@ -82,4 +81,9 @@ body {
 
 .test {
 	border: 1px solid red;
+}
+
+.div_li{
+	text-align:  center;
+	border: #1B6D85;
 }
