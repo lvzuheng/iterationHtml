@@ -8,7 +8,7 @@ body {
 
 #div_frame {
 	margin: 0;
-	padding: 0;
+	/*padding: 0;*/
 	height: 100%;
 	width: 100%;
 }
@@ -20,6 +20,7 @@ body {
 
 #div_body {
 	height: 80%;
+	padding: 0;
 }
 
 #div_body_index {
@@ -27,7 +28,8 @@ body {
 	overflow: hidden;
 	padding: 0;
 	max-width: 180px;
-	border: #D6E9C6 solid 1px;
+	background: #F0F8FF;
+	/*border: #D6E9C6 solid 1px;*/
 }
 
 #div_user {
@@ -88,4 +90,10 @@ body {
 	margin: 0;
 	padding: 0;
 	background: #008080;
+}
+
+#div_footer{
+	height: 15%;
+	background: #F0F8FF;
+	padding: 20px;
 }

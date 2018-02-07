@@ -53,16 +53,41 @@ function initProjectList(start) {
 		readSize = size;
 	}
 	for(var i = start; i < start + readSize; i++) {
-		var li = createElemet("li", projectArray[i].projectname);
-		li.setAttribute("value", projectArray[i].id);
-		li.addEventListener('click', function() {
-			setProjectId($(this).val());
-			location.href = "file.html";
-		});
+//
+//		var li = createElemet("li", projectArray[i].projectname);
+//		li.setAttribute("value", projectArray[i].id);
+//		li.addEventListener('click', function() {
+//			setProjectId($(this).val());
+//			location.href = "file.html";
+//		});
+		var li = creatProjectSquare(projectArray[i]);
+		$(li).addClass("col-lg-4 col-sm-4 col-xs-4 col-md-4");
+		li.style.height = (ul_project[0].offsetHeight/3)+"px";
 		ul_project.append(li);
-
+		console.log("li.offsetWidth:"+ul_project[0].offsetWidth/4);
+		console.log("ul_project.offsetWidth:"+ul_project[0].offsetWidth);
 	}
+
 	startIndex = start + size;
+}
+
+function creatProjectSquare(project) {
+	var div = createElemet("div", null);
+	var pName = createElemet("p", project.projectname);
+	pName.style.fontSize = "30px";
+	var pAu = createElemet("p", project.authority == 1 ? "公开" : "私有");
+	div.appendChild(pName);
+	div.appendChild(pAu);
+	$(div).addClass(" div_li_project img-thumbnail");
+	var li = createElemet("li", null);
+	li.setAttribute("value", project.id);
+	li.style.padding = "10px";
+	li.addEventListener('click', function() {
+		setProjectId($(this).val());
+		location.href = "file.html";
+	});
+	li.appendChild(div);
+	return li;
 }
 
 function initIndexList() {
