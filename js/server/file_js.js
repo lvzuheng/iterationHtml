@@ -34,18 +34,22 @@ function loadProject() {
 			console.log(JSON.parse(result));
 			projectArray = JSON.parse(result);
 			console.log("selectProjectId:" + selectProjectId + "," + (selectProjectId == null));
+			inter:
 			if(selectProjectId == null) {
 				selectProjectId = projectArray[0].id;
 				console.log("selectProjectId:" + selectProjectId);
-
 			} else {
 				for(var i = 0; i < projectArray.length; i++) {
-					if(projectArray[i].projectId == selectProjectId) {
-						break;
+					if(projectArray[i].id == selectProjectId) {
+						console.log("selectProjectId:" + (projectArray[i].id + "，" + selectProjectId));
+						break inter;
 					}
-					selectProjectId = projectArray[0].id
 				}
+				console.log("selectProjectId:出来了");
+				selectProjectId = projectArray[0].id;
 			}
+			
+			console.log("selectProjectId:" + selectProjectId + "," + (selectProjectId == null));
 			initProject(projectArray, selectProjectId);
 		},
 		error: function(result) {
@@ -56,10 +60,10 @@ function loadProject() {
 }
 
 function initProject(projects, projectId) {
-
 	var ul_index = $("#ul_project");
 	ul_index.html("");
 	selectProjectId = projectId;
+
 	if(projectArray != null && projectArray.length > 0) {
 		for(var i = 0; i < projectArray.length; i++) {
 			if(projectArray[i].id == projectId) {
@@ -68,6 +72,7 @@ function initProject(projects, projectId) {
 				projectArray.splice(0, 0, data);
 			}
 		}
+		console.log("ul_project:" + projectArray[0].id + "," + projectArray[0].projectname);
 		var width = 0;
 		var li_more;
 		var ul_more;
@@ -120,7 +125,7 @@ function initProject(projects, projectId) {
 }
 
 function loadFileList(projectId) {
-	console.log("aaa:" + projectId);
+	//	console.log("aaa:" + projectId);
 	var fileList = {
 		"userName": user,
 		"passWord": $.md5(pWord),
@@ -148,7 +153,7 @@ function loadFileList(projectId) {
 
 function initFlieList(data) {
 	$('#table_file tr').eq(0).nextAll().remove();
-	console.log("initFlieList:" + JSON.stringify(data));
+	//	console.log("initFlieList:" + JSON.stringify(data));
 	for(var i = 0; i < data.length; i++) {
 		var tr = createElemet("tr");
 		var td = createElemet("td", null);
@@ -238,6 +243,7 @@ function upload(filename, filesize, dataURL) {
 			}
 		},
 		error: function(result) {
+			loading.close();
 			showInfoDialog("上传失败，请验证文件信息", 1000);
 			console.log(JSON.stringify(result));
 			return null;
@@ -369,11 +375,11 @@ function saveProject() {
 			success: function(result) {
 				if(result != 0) {
 					var p = JSON.parse(result);
-//					for(var i = 0; i < projectArray.length; i++) {
-//						if(projectArray[i].id == p.id) {
-//							projectArray[i] = p;
-//						}
-//					}
+					//					for(var i = 0; i < projectArray.length; i++) {
+					//						if(projectArray[i].id == p.id) {
+					//							projectArray[i] = p;
+					//						}
+					//					}
 					loadProject();
 					loading.close();
 					showInfoDialog("更新成功", 1000);

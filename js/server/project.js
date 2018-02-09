@@ -3,7 +3,7 @@ var passWord;
 var uri = connectUrl + "file/"
 var projectArray = new Array;
 var startIndex;
-var size = 6;
+var size = 9;
 
 function init() {
 	if($.cookie("userName") == null || $.cookie("passWord") == null) {
@@ -160,7 +160,8 @@ function button_add_event() {
 				loading.close();
 				if(result != "0") {
 					$("#input_add_projectName").val("");
-					$("#input_add_projectAuthority").val("");
+					$("#input_add_projectAuthority option[0]").attr("selected", "selected");
+//					$("#input_add_projectAuthority").val("");
 					loadProjectList(0);
 					var info_d = info_dialog("创建成功");
 					info_d.show();
