@@ -1,0 +1,117 @@
+body,
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.div-frame {
+	height: 99%;
+	width: 99%;
+	margin: 0 auto;
+	min-width: 300px;
+	overflow: hidden;
+	position: relative;
+}
+
+.div-header {
+	text-align: center;
+}
+
+#div_body {
+	margin-top: 10px;
+	height: 99%;
+	width: 99%;
+	margin: 0 auto;
+	overflow: hidden;
+	position: relative;
+}
+
+.table-flie {}
+
+.table-flie td {
+	/*width: 100%; table-layout: fixed;*/
+	vertical-align: top;
+}
+
+.table-flie td {
+	border: 1px solid gainsboro;
+	word-break: keep-all;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: center;
+	padding: 2px;
+}
+
+.table-flie tr:hover  {
+	background-color: #CCEA9F;
+}
+
+
+.table-flie :hover {
+	cursor: pointer;
+}
+
+#ul_project {
+	/*background: red;*/
+	/*overflow: hidden;*/
+	/*height: 100px;*/
+}
+
+#ul_project>li {}
+
+.test {
+	background: red;
+}
+
+#table_details {
+	border: 1;
+	cellpadding: 0;
+	cellspacing: 0;
+	table-layout: fixed;
+}
+
+#table_details td {
+	border: 1px solid gainsboro;
+	padding: 5px;
+	overflow: hidden;
+	border-radius: 10px;
+}
+
+#table_details td>font:nth-child(1) {
+	margin-right: 10px;
+	color: gray;
+}
+
+#table_details th {
+	text-align: center;
+	color: #666666;
+	background: #F4F5F9;
+}
+
+.circle-btn {
+	outline:none;
+	border: 1px solid #D4D4D4;
+	position:absolute;
+	left: 0;
+	background: #FCF8E3;
+	height: 25px;
+	margin-left:2px ;
+	-moz-border-radius: 50%;
+	/* Gecko browsers */
+	-webkit-border-radius:  50%;
+	/* Webkit browsers */
+	border-radius:  50%;
+	/* W3C syntax */
+	z-index: 9999;
+	display: none;
+}
+.circle-btn:hover{
+	color: red;
+	background: #FAF2CC;
+}
+.table-flie tr:hover .circle-btn{
+	display: inline-block;
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<link rel="stylesheet" href="css/file_css.css" />
+	<link rel="stylesheet" href="css/bootstrap.css" />
+	<script type="text/javascript" src="js/server/config.js"></script>
+	<script type="text/javascript" src="js/server/file_js.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/utils/json2.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/utils/CookieUtil.js"></script>
+	<script type="text/javascript" src="js/jquery/jQuery.md5.js"></script>
+	<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/dialog/dialog.js"></script>
+	<script type="text/javascript" src="js/server/dialog_server.js"></script>
+
+	<body onload="init()">
+		<div id="div_frame" class="div-frame col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div id="div_header" class="div-header">
+
+			</div>
+			<div id="div_body" class="div-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<ul id="ul_project" class="nav nav-tabs col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				</ul>
+				<div id="div_btn" class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="margin-top: 10px;">
+					<input type="file" id="files" style="display:none"  onchange="importFile();" accept=".apk,.jar" />
+					<input type="button" id="create" class="btn btn-success" value="创建管理" onclick="createProduct()" />
+					<!--<input type="button" id="import" class="btn btn-success" value="上传文件" onclick="javascript:$('#files').click();" />-->
+					<!--<input type="button" id="delete" class="btn btn-danger" value="刪除選中的文件" onclick="deleteFile();" />-->
+					<input type="button" id="setting" class="btn btn-danger" value="应用管理" onclick="productSetting()" />
+				</div>
+				<div id="div_table" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
+					<table id="table_file" class="table-flie col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<tr class="tr-title">
+							<!--<td class="col-lg-1 col-md-1 col-sm-1 col-xs-1">选择</td>-->
+							<th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">应用名</td>
+								<!--<td class="col-lg-2 col-md-2 col-sm-2 col-xs-2">包名</td>
+							<td class="col-lg-1 col-md-1 col-sm-1 col-xs-1">版本号</td>-->
+								<th class="col-lg-2 col-md-4 col-sm-4 co3-xs-4">状态</td>
+									<!--<td class="col-lg-2 col-md-2 col-sm-2 col-xs-2">密钥</td>-->
+									<th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">创建时间</td>
+						</tr>
+						<tr class="tr-title">
+							<!--<td class="col-lg-1 col-md-1 col-sm-1 col-xs-1">选择</td>-->
+							<td class="col-lg-4 col-md-4 col-sm-4 col-xs-4">应用名</td>
+							<!--<td class="col-lg-2 col-md-2 col-sm-2 col-xs-2">包名</td>
+							<td class="col-lg-1 col-md-1 col-sm-1 col-xs-1">版本号</td>-->
+							<td class="col-lg-2 col-md-4 col-sm-4 co3-xs-4">状态</td>
+							<!--<td class="col-lg-2 col-md-2 col-sm-2 col-xs-2">密钥</td>-->
+							<td class="col-lg-4 col-md-4 col-sm-4 col-xs-4">创建时间</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div id="div_footer">
+			</div>
+		</div>
+		<div id="div_create" style="display: none;">
+			<div id="div_create_input">
+				<div class="form-group  has-feedback">
+					<label class="control-label" for="">应用名</label>
+					<input type="text" class="form-control" id="input_create_productName" />
+					<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+					<span id="inputSuccess2Status" class="sr-only">(success)</span>
+					<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+					<span id="inputError2Status" class="sr-only">(error)</span>
+				</div>
+				<div class="form-group ">
+					<label class="control-label" for="">应用类型</label>
+					<div class="">
+						<select class="form-control" id="input_create_productAuthory">
+							<option value="1">公开</option>
+							<option value="0" selected="selected">私有</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="div_delete" style="display: none;">
+			<div id="div_delete_input">
+				<div class="form-group ">
+					<label for="firstname" class=" control-label">应用名</label>
+					<div class="">
+						<input type="text" class="form-control" disabled="disabled" id="input_delete_productName" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="lastname" class=" control-label">应用类型</label>
+					<div class="">
+						<input type="text" class="form-control" disabled="disabled" id="input_delete_productAuthory" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="div_details" class="" style="background: white; display: none;">
+			<table id="table_details" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<th colspan='3'>基本信息</th>
+				<tr>
+					<td>
+						<font>应用名:</font>
+						<font id="font_productName"></font>
+					</td>
+					<td>
+						<font>创建时间:</font>
+						<font id="font_createTime"></font>
+					</td>
+					<td>
+						<font>状态:</font>
+						<font id="font_authority"></font>
+					</td>
+				</tr>
+				<th colspan='3'>应用信息</th>
+				<tr>
+					<td colspan='2'>
+						<font>包名:</font>
+						<font id="font_packname"></font>
+					</td>
+					<td>
+						<font>上传时间:</font>
+						<font id="font_uploadTime"></font>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<font>版本名:</font>
+						<font id="font_versionName"></font>
+					</td>
+					<td>
+						<font>版本号:</font>
+						<font id="font_versionCode"></font>
+					</td>
+
+					<td colspan='1.5'>
+						<font>文件大小:</font>
+						<font id="font_fileSize"></font>
+					</td>
+				</tr>
+				<tr>
+					<td colspan='3'>
+						<font>密钥:</font>
+						<font id="font_condition"></font>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+
+</html>
